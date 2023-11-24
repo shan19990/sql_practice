@@ -56,8 +56,12 @@ IFNULL(SUM(CASE WHEN state = "approved" THEN amount END) ,0) AS approved_total_a
 FROM Transactions GROUP BY month,country;
 
 # Write a solution to find the percentage of immediate orders in the first orders of all customers, rounded to 2 decimal places.
-SELECT SUM(CASE WHEN order_date = customer_pref_delivery_date THEN 1 END)/COUNT(DISTINCT customer_id) * 100 AS immediate_percentage FROM Delivery WHERE (customer_id,order_date) IN 
-(SELECT customer_id, MIN(order_date) FROM Delivery GROUP BY customer_id);
+SELECT ROUND(SUM(CASE WHEN customer_pref_delivery_date = order_date THEN 1 ELSE 0 END)/COUNT(DISTINCT customer_id)*100 ,2) AS immediate_percentage FROM Delivery WHERE (customer_id,order_date) IN (SELECT customer_id, MIN(order_date) FROM Delivery GROUP BY customer_id);
+
+# Write a solution to calculate the number of unique subjects each teacher teaches in the university.
+SELECT teacher_id, COUNT(DISTINCT subject_id) AS cnt FROM Teacher GROUP BY teacher_id;
+
+# 
 
 
 
